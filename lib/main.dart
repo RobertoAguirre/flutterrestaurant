@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttermegaproject/screens/home.dart';
 import 'package:http/http.dart' as http;
 
 import 'screens/login.dart';
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const NewUser (),
+      home: const Home(),
+     // home: const NewUser (),
     );
   }
 }
