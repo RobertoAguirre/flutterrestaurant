@@ -119,32 +119,33 @@ class _LoginState extends State<Login> {
               body: jsonEncode(body), // Convert the body to a JSON string
               );
               
-                if(response.statusCode==201){
+                if(response.statusCode==200){
                   //api call succeeded handle the response if needed
                     print('User created successfully');  
                     //show a flutter dialog with the message 'User created successfully'
                                         //show a flutter dialog with the message 'User created successfully'
                     // ignore: use_build_context_synchronously
-                    showDialog(
-                      context: context, 
-                      builder: (BuildContext context){
-                        return AlertDialog(
-                          title: const Text('Success'),
-                          content: const Text('User created successfully'),
-                          actions: [
-                            TextButton(
-                              onPressed: (){
-                                //Navigator.of(context).pop();
-                                //redirect to the home page
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Home()));
-                              },
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const Home()));
+                    // showDialog(
+                    //   context: context, 
+                    //   builder: (BuildContext context){
+                    //     return AlertDialog(
+                    //       title: const Text('Success'),
+                    //       content: const Text('User created successfully'),
+                    //       actions: [
+                    //         TextButton(
+                    //           onPressed: (){
+                    //             //Navigator.of(context).pop();
+                    //             //redirect to the home page
+                    //             Navigator.push(context, MaterialPageRoute(builder: (context)=>const Home()));
+                    //           },
                                
-                              child: const Text('Ok')
-                            )
-                          ],
-                        );
-                      }
-                    );
+                    //           child: const Text('Ok')
+                    //         )
+                    //       ],
+                    //     );
+                    //   }
+                    // );
 
                   }else{
                    // ignore: use_build_context_synchronously

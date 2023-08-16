@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermegaproject/screens/Users/userdetails.dart';
+import 'package:http/http.dart' as http;
 
 class Users extends StatefulWidget {
   const Users({super.key});
@@ -9,59 +13,81 @@ class Users extends StatefulWidget {
 }
 
 class _UsersState extends State<Users> {
+  List<dynamic> users = [];
+  bool isLoading = true;
+  String error = '';
   final String userId ='';
-   @override
-  Widget build(BuildContext context) {
- 
 
+  @override
+  void initState() {
+    super.initState();
+    fetchUsers();
+  }
+
+  Future<void> fetchUsers() async{
+    try{
+      final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
+      if(response.statusCode == 200){
+        setState(() {
+          users = json.decode(response.body);
+          isLoading = false;
+        });
+      }else{
+        setState(() {
+          error = 'Error fetching users';
+          isLoading = false;
+        });
+      }
+    }catch(e){
+      setState(() {
+        error = 'Error fetching users: $e';
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: const Text('Usuarios'),
+            
           ),
          //make a list of users with tappable elements
-          body: ListView(
-            children: [
-              ListTile(
-                title: Text('User 1'),
-                onTap: () {
-                  //on tap go to user details page
-                  
-                  //q:how to pass user data to user details page?
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: isLoading
+            ? const CircularProgressIndicator()
+            : error.isNotEmpty
+                ? Text(error)
+                : Card(
+                child: ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      //add a circle avatar to the list
+                      leading: CircleAvatar(
+                        child: Text(users[index]['name'][0]),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserDetails(
+                              userId: users[index]['id'].toString(),
+                            ),
+                          ),
+                        );
+                      },
+                      title: Text(users[index]['name']),
+                      subtitle: Text(users[index]['email']),
+                    );
+                  },
 
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => UserDetails(userId:'123')));
-                },
+                ),
               ),
-              ListTile(
-                title: Text('User 2'),
-                onTap: () {
-                  //on tap go to user details page
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => UserDetails(userId:'123')));
-                },
-              ),
-              ListTile(
-                title: Text('User 3'),
-                onTap: () {
-                  //on tap go to user details page
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => UserDetails(userId:'123')));
-                },
-              ),
-              ListTile(
-                title: Text('User 4'),
-                onTap: () {
-                  //on tap go to user details page
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => UserDetails(userId:'123')));
-                },
-              ),
-              ListTile(
-                title: Text('User 5'),
-                onTap: () {
-                  //on tap go to user details page
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => UserDetails(userId:'123')));
-                  
-                },
-              ),
-            ],
-          ),
-    );
+            ),
+          );
   }
 }
