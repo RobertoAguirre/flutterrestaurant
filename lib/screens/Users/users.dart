@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+
 import 'package:fluttermegaproject/screens/Users/userdetails.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +26,7 @@ class _UsersState extends State<Users> {
 
   Future<void> fetchUsers() async{
     try{
-      final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
+      final response = await http.get(Uri.parse('http://localhost:3001/api/v1/users/getAll'));
       if(response.statusCode == 200){
         setState(() {
           users = json.decode(response.body);
@@ -68,20 +68,20 @@ class _UsersState extends State<Users> {
                     return ListTile(
                       //add a circle avatar to the list
                       leading: CircleAvatar(
-                        child: Text(users[index]['name'][0]),
+                        child: Text(users[index]['email'][0]),
                       ),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => UserDetails(
-                              userId: users[index]['id'].toString(),
+                              userId: users[index]['_id'].toString(),
                             ),
                           ),
                         );
                       },
-                      title: Text(users[index]['name']),
-                      subtitle: Text(users[index]['email']),
+                      title: Text(users[index]['email']),
+                      subtitle: Text(users[index]['role']),
                     );
                   },
 

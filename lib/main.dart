@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttermegaproject/screens/Users/userdetails.dart';
 import 'package:fluttermegaproject/screens/home.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const Home(),
+      home: UserDetails(userId: '64d3efccbc7127c5ce62932e',),
      // home: const NewUser (),
     );
   }
