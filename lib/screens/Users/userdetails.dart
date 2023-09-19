@@ -29,7 +29,7 @@ class _UserDetailsState extends State<UserDetails> {
 
   Future<void> fetchUserData() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:3001/api/v1/users/${widget.userId}'));
+      final response = await http.get(Uri.parse('http://50.21.186.23:3001/api/v1/users/${widget.userId}'));
       if (response.statusCode == 200) {
         final responseJson = json.decode(response.body);
         final myResponse = MyResponse.fromJson(responseJson, (json) => User.fromJson(json));
