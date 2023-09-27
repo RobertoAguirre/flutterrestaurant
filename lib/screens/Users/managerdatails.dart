@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../classes/MyResponse.dart';
-import '../../classes/User.dart';
+import '../../classes/Manager.dart';
 
 
 
@@ -43,35 +43,35 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     throw UnimplementedError();
   }
 }
-class UserDetails extends StatefulWidget {
+class managerDetails extends StatefulWidget {
   final String userId;
 
-  const UserDetails({required this.userId});
+  const managerDetails({required this.userId});
 
   @override
-  _UserDetailsState createState() => _UserDetailsState();
+  _managerDetailsState createState() => _managerDetailsState();
 }
 
-class _UserDetailsState extends State<UserDetails> {
-  User fetchedUser = User(id: '', email: '', role: '');
+class _managerDetailsState extends State<managerDetails> {
+  Manager fetchedManager = Manager(id: '', email: '', role: '');
   bool isLoading = true;
    
   @override
   void initState() {
     super.initState();
-    fetchUserData();
+    fetchManagerData();
   }
 
 
 
-  Future<void> fetchUserData() async {
+  Future<void> fetchManagerData() async {
     try {
       final response = await http.get(Uri.parse('http://50.21.186.23:3001/api/v1/users/${widget.userId}'));
       if (response.statusCode == 200) {
         final responseJson = json.decode(response.body);
-        final myResponse = MyResponse.fromJson(responseJson, (json) => User.fromJson(json));
+        final myResponse = MyResponse.fromJson(responseJson, (json) => Manager.fromJson(json));
         setState(() {
-          fetchedUser = myResponse.results.isNotEmpty ? myResponse.results[0] : User(id: '', email: '', role: '');
+          fetchedManager = myResponse.results.isNotEmpty ? myResponse.results[0] : Manager(id: '', email: '', role: '');
           isLoading = false;
         });
       } else {
@@ -88,16 +88,16 @@ class _UserDetailsState extends State<UserDetails> {
     }
   }
 
- Future<void> updateUser(User user) async {
+ Future<void> updateManager(Manager manager) async {
   try {
-    final apiUrl = 'http://localhost:3001/api/v1/users/${user.id}'; // Replace with your API endpoint for updating a user
+    final apiUrl = 'http://localhost:3001/api/v1/users/${manager.id}'; // Replace with your API endpoint for updating a user
     final Map<String, String> headers = {
       'Content-Type': 'application/json', // Set the correct content-type header for JSON
     };
 
     final Map<String, dynamic> body = {
-      'username': user.email,
-      'role': user.role,
+      'username': manager.email,
+      'role': manager.role,
     };
 
     final response = await http.patch(
@@ -108,7 +108,7 @@ class _UserDetailsState extends State<UserDetails> {
 
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
-      final myResponse = MyResponse.fromJson(responseJson, (json) => User.fromJson(json));
+      final myResponse = MyResponse.fromJson(responseJson, (json) => Manager.fromJson(json));
 
       // Check if the update operation was successful
       if (myResponse.message == 'User updated successfully') {
@@ -128,12 +128,12 @@ class _UserDetailsState extends State<UserDetails> {
 }
 
 
-Future<void> deleteUser() async {
+Future<void> deleteManager() async {
   try {
     final response = await http.delete(Uri.parse('http://localhost:3001/api/v1/users/${widget.userId}'));
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
-      final myResponse = MyResponse.fromJson(responseJson, (json) => User.fromJson(json));
+      final myResponse = MyResponse.fromJson(responseJson, (json) => Manager.fromJson(json));
 
       // Check if the delete operation was successful
       if (myResponse.message == 'User deleted successfully') {
@@ -164,12 +164,13 @@ Future<void> deleteUser() async {
     return Scaffold(
       
       appBar: AppBar(
-        title: Text('Datos de usuario'),
+        centerTitle: true ,
+        title: Text('Info restaurante manager'),
         elevation: 0.0,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : fetchedUser != null
+          : fetchedManager != null
           
               ? Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(250,90,230,90),
@@ -196,17 +197,17 @@ Future<void> deleteUser() async {
                               ),  
                           
                            
-                         Text(
+                       /*   Text(
                             textAlign: TextAlign.start,
                             
                             'User ID: ${fetchedUser!.id}', // Change to use User properties
                             style:const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ), 
                           const SizedBox(height: 16),
-                          // Text(
-                          //   'User Name: ${fetchedUser!.name}', // Change to use User properties
-                          //   style: TextStyle(fontSize: 16),
-                          // ),
+                           Text(
+                             'User Name: ${fetchedUser.name}', // Change to use User properties
+                             style: TextStyle(fontSize: 16),
+                           ), 
                           const SizedBox(height: 8),
                         
  
@@ -215,11 +216,11 @@ Future<void> deleteUser() async {
                             'Email: ${fetchedUser!.email}', // Change to use User properties
                             style: const TextStyle(fontSize: 16),
             
-                          ), 
+                          ),*/ 
                         const SizedBox(height: 8), 
                          TextFormField(
                               decoration: const InputDecoration(
-                                hintText: 'Would you like to change your email?',
+                                hintText: 'Check my restaurants',
                               ),
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
@@ -232,22 +233,22 @@ Future<void> deleteUser() async {
                           
                           
                           const SizedBox(height: 10),
-                          Text(
-                            'Role: ${fetchedUser!.role}', // Change to use User properties
+                           Text(
+                            'Role: ${fetchedManager!.role}', // Change to use User properties
                             style: TextStyle(fontSize: 16),
-                          ), 
+                          ),  
                           const SizedBox(height: 8),
-                          TextFormField(
+                          /* TextFormField(
                               decoration: const InputDecoration(
-                                hintText: 'Role:',
+                                hintText: 'Delete',
                               ),
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return 'Please enter the table or menu that you like to delete';
                                 }
                                 return null;
                               },
-                            ),
+                            ), */
                           const SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -267,14 +268,25 @@ Future<void> deleteUser() async {
                                   showDialog(
                                       context: context, 
                                       builder: (context) => const AlertDialog(
-                                        title: Text('Editar datos del usuario'),
-                                        content: Text('¿Que accion gustaria realizar?,cambiar correo o cambiar rol'),
+                                        title: Text('Editar restaurante'),
+                                        content: Text('¿Que accion gustaria realizar con el restaurante?'),
+                                        actions: <Widget>[
+                                         ElevatedButton(
+                                          onPressed: null,
+                                            child: const Text('Delete order'),          
+                                         ),
+                                         ElevatedButton(
+                                          onPressed:null,
+                                          child:  Text('Edit'),
+                                         ),
+                                           ]
+                                        
                                       ),
                                       
                                   );
                                   
                                   },
-                                  child: Text('Editar Usuario'),
+                                  child: Text('Restaurante'),
                                 
                                    ),
                                   
@@ -297,8 +309,8 @@ Future<void> deleteUser() async {
                                     showDialog(
                                       context: context, 
                                       builder: (context) => AlertDialog(
-                                        title: Text('Eliminar Usuario'),
-                                        content: Text('¿Esta seguro de que quiere eliminar el usuario?'),
+                                        title: Text('Eliminar pedido restaurante'),
+                                        content: Text('¿Esta seguro de que quiere eliminar el pedido'),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
@@ -317,7 +329,7 @@ Future<void> deleteUser() async {
                                       )
                                     );
                                   },
-                                  child: Text('Remove User'),
+                                  child: Text('Eliminar pedido'),
                                 ),
                               ),
                             ],
@@ -328,7 +340,7 @@ Future<void> deleteUser() async {
                     
                   ),
                 )
-              : Center(child: Text('No user data available')),
+              : Center(child: Text('No hay pedidos pendientes')),
     );
   }
 }

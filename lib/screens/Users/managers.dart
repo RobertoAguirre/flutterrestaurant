@@ -1,22 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/widgets.dart';
-import 'package:fluttermegaproject/screens/Users/userdetails.dart';
+import 'package:fluttermegaproject/screens/Users/managerdatails.dart';
 import 'package:http/http.dart' as http;
 
 
- class Users extends StatefulWidget {
-  const Users({super.key});
+ class Managers extends StatefulWidget {
+  const Managers({super.key});
 
   @override
-  State<Users> createState() => _UsersState();
+  State<Managers> createState() => _ManagersState();
 }
 
 
 
-class _UsersState extends State<Users> {
-  List<dynamic> users = [];
+
+class _ManagersState extends State<Managers> {
+  List<dynamic> managers = [];
   bool isLoading = true;
   String error = '';
   final String userId ='';
@@ -26,10 +25,10 @@ class _UsersState extends State<Users> {
   @override
   void initState() {
     super.initState();
-    fetchUsers();
+    fetchManagers();
   }
 
-  Future<void> fetchUsers() async{
+  Future<void> fetchManagers() async{
     try{
       //final response = await http.get(Uri.parse('http://localhost:3001/api/v1/users/getAll'));
       //final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
@@ -37,7 +36,7 @@ class _UsersState extends State<Users> {
 
       if(response.statusCode == 200){
         setState(() {
-          users = json.decode(response.body);
+          managers = json.decode(response.body);
           isLoading = false;
         });
       }else{
@@ -59,7 +58,7 @@ class _UsersState extends State<Users> {
   Widget build(BuildContext context) {
     
     var listView = ListView.builder(
-                  itemCount: users.length,
+                  itemCount: managers.length,
                   shrinkWrap:true,
                   
                   
@@ -68,22 +67,22 @@ class _UsersState extends State<Users> {
                       
                       //add a circle avatar to the list
                       leading: CircleAvatar(
-                        child: Text(users[index]['email'][0]),
+                        child: Text(managers[index]['email'][0]),
                       ),
                    
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserDetails(
-                              userId: users[index]['_id'].toString(),
+                            builder: (context) => managerDetails(
+                              userId: managers[index]['_id'].toString(),
 
                             ),
                           ),
                         );
                       },
-                      title: Text(users[index]['email']),
-                      subtitle: Text(users[index]['role']),
+                      title: Text(managers[index]['email']),
+                      subtitle: Text(managers[index]['role']),
                      
                     );
                     
@@ -106,7 +105,7 @@ class _UsersState extends State<Users> {
     return Scaffold(
           appBar: AppBar(
             centerTitle: true ,
-            title: const Text('Usuarios'),
+            title: const Text('Manager screen'),
             
             
             

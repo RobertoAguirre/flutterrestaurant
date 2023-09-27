@@ -1,18 +1,18 @@
-class User {
+class Manager {
   final String id;
   //final String name;
   final String email;
   final String role;
 
-  User({
+  Manager({
     required this.id,
     //required this.name,
     required this.email,
     required this.role,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory Manager.fromJson(Map<String, dynamic> json) {
+    return Manager(
       id: json['_id'],
       //name: json['name'],
       email: json['email'],

@@ -1,17 +1,28 @@
 import 'dart:html';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttermegaproject/screens/Users/userdetails.dart';
+import 'package:fluttermegaproject/screens/Users/managers.dart';
 import 'package:fluttermegaproject/screens/Users/users.dart';
+import 'classes/Manager.dart';
 import 'package:fluttermegaproject/screens/home.dart';
 import 'package:http/http.dart' as http;
-
 import 'screens/login.dart';
 
-void main() {
-  runApp(const MyApp());
+ void main() {
+  runApp(
+    
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(useMaterial3: true),
+      home: const Managers(),
+    ),
+    
+  );
+  
+  
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -25,13 +36,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: Users() 
+      //home: const managers() 
       //UserDetails(userId: '64d3efccbc7127c5ce62932e',),
-     // home: const NewUser (),
+      home: const Managers(),
     );
+    
+    
   }
 }
-
 
 class NewUser extends StatefulWidget {
   const NewUser({super.key});
@@ -123,11 +135,11 @@ class _NewUserState extends State<NewUser> {
                         //validate if the password and confirm password are the same, if not show an error if they are the same submit the form                        
                         if(passwordController.text != confirmPasswordController.text){
                           //show an browser alert dialog with the error 'passwords do not match
-                          //window.alert('passwords do not match');
+                          window.alert('passwords do not match');
                           //show a flutter snackbar with the error 'passwords do not match'
-                         /* ScaffoldMessenger.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('passwords do not match')),
-                          );*/
+                          );
                                                     //show a flutter dialog with the error 'passwords do not match'
                           showDialog(
                             context: context, 
@@ -229,6 +241,9 @@ class _NewUserState extends State<NewUser> {
                 }
       } 
 
-
-  
 }
+
+
+
+
+
